@@ -7,7 +7,7 @@
 const debug = require('debug')('mini-twitch:server');
 const http = require('http');
 
-const app = require('../app');
+const app = require('../src/server/app');
 
 /**
  * Get port from environment and store in Express.
