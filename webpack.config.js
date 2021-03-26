@@ -10,7 +10,7 @@ const webpackConfig = {
   entry: { main: ['./src/client/main.js'] },
   output: {
     path: config.distFolder,
-    filename: '[name].[hash].js',
+    filename: '[name].[fullhash].js',
     publicPath: config.publicPath,
   },
   mode: config.isProd ? 'production' : 'development',
