@@ -4,7 +4,8 @@ const router = express.Router();
 
 module.exports = () => {
   router.get('/', (req, res) => {
-    res.render('pages/index', { title: 'Mini Twitch' });
+    // console.log(req);
+    res.render('index', {});
   });
   return router;
 };

@@ -1,10 +1,11 @@
 doctype html
 html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet", href=webpack_asset('main').css)
-    block title
-  body
-    block content
-    script(src=webpack_asset('main').js)
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href=webpack_asset('main').css )
+        block title
+    body
+        include ../includes/header
+        block content
+        script(src=webpack_asset('main').js)

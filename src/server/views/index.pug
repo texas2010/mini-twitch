@@ -1,0 +1,12 @@
+extends parts/layout
+
+block title
+    title Mini Twitch - Home
+block content
+    #search-wrapper.container
+        .row.justify-content-center
+            .col-md-8.col-lg-6
+                form#search.input-group.mb-2(method="get")
+                    input.form-control(type="text", name="search", placeholder="Username", aria-label="Username", aria-describedby="basic-addon2", value="", minlength="4", maxlength="25")
+                    .input-group-append
+                        button.btn.btn-outline-secondary(type="submit", disabled=true) Submit
