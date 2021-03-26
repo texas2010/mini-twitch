@@ -4,10 +4,9 @@
   "description": "Mini Twitch project using Twitch API",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "NODE_ENV=production node ./bin/www",
     "dev_comment": "do not remove node env in dev",
-    "dev": "NODE_ENV=development node ./bin/www",
-    "webpack": "NODE_ENV=development npx webpack --watch"
+    "dev": "NODE_ENV=development node ./bin/www"
   },
   "author": "Lance/texas2010",
   "license": "ISC",
