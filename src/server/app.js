@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const webpackAssets = require('express-webpack-assets');
 
 const config = require('../config');
 const routes = require('./routes');
@@ -26,6 +27,12 @@ module.exports = () => {
     const { createProxy } = require('./hmr');
     app.use(config.publicPath, createProxy());
   }
+
+  app.use(
+    webpackAssets(path.join(__dirname, '../../dist/webpack-assets.json'), {
+      devMode: process.env.NODE_ENV !== 'production',
+    })
+  );
 
   // Routes
   app.use('/', routes());
