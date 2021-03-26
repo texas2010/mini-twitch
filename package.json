@@ -4,6 +4,7 @@
   "description": "Mini Twitch project using Twitch API",
   "private": true,
   "scripts": {
+    "prestart": "npm run build",
     "start": "NODE_ENV=production node ./bin/www",
     "build": "NODE_ENV=production webpack",
     "start:prod": "NODE_ENV=production node ./bin/www",
