@@ -4,7 +4,8 @@
   "description": "Mini Twitch project using Twitch API",
   "private": true,
   "scripts": {
-    "prebuild": "rm -rf dist/*",
+    "clean": "rm -rf dist/*",
+    "prebuild": "npm run clean",
     "build": "NODE_ENV=production webpack",
     "prestart": "npm run build",
     "start": "NODE_ENV=production node ./bin/www",
