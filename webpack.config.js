@@ -1,3 +1,5 @@
+const Webpack = require('webpack');
+
 const config = require('./src/config');
 
 const webpackConfig = {
@@ -20,8 +22,17 @@ const webpackConfig = {
           },
         },
       },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+      },
     ],
   },
+  plugins: [],
 };
+
+if (config.hmrEnabled) {
+  webpackConfig.plugins.push(new Webpack.HotModuleReplacementPlugin());
+}
 
 module.exports = webpackConfig;
