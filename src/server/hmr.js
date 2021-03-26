@@ -22,17 +22,22 @@ exports.startWds = () => {
 
   const compiler = Webpack(webpackConfig);
 
-  compiler.watch('compile', () => {
-    console.log('Bundling...');
-  });
+  const watching = compiler.watch(
+    {
+      ignored: /node_modules/,
+    },
+    () => {
+      console.log('Bundling...');
+    }
+  );
 
-  compiler.watch('done', () => {
-    console.log('Bundling succeeded');
-  });
+  // this code will stop error of ConcurrentCompilationError: You ran Webpack twice.
+  watching.close(() => {});
 
   const bundler = new WebpackDevServer(compiler, {
     publicPath: config.publicPath,
     hot: config.hmrEnabled,
+    sockHost: `http://localhost:${config.wdsPort}${config.publicPath}`,
     quiet: false,
     noInfo: true,
     stats: {
