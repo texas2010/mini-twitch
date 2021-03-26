@@ -28,12 +28,7 @@ const webpackConfig = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: [
-          config.isProd ? { loader: MiniCssExtractPlugin.loader } : 'style-loader',
-          'css-loader',
-          'postcss-loader',
-          'sass-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
       },
     ],
   },
