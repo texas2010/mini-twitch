@@ -14,10 +14,10 @@ block content
                         placeholder="Username",
                         aria-label="Username",
                         aria-describedby="basic-addon2",
-                        value="",
+                        value= username || '',
                         minlength="4",
                         maxlength="27"
                     )
                     .input-group-append
                         button.btn.btn-outline-secondary(type="submit", disabled=true) Submit
-                p#search-warning(class=warningClasses)
+                p#search-warning(class=warningClasses class=warningMessage ? 'p-1' : '')= warningMessage
