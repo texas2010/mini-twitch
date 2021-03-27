@@ -11,9 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-header h1 {
-  color: $dark-salmon;
-  margin: 0;
+header {
+  margin: 0.5px;
+  margin-bottom: 20px;
+  h1 {
+    margin: 0;
+  }
+  a {
+    color: $dark-salmon;
+    &:hover {
+      color: $dark-salmon;
+    }
+  }
 }
 
 #search-wrapper button {
@@ -24,8 +33,5 @@ header h1 {
     background-color: $light-french-beige;
     color: $st-patricks-blue;
     border-color: $light-french-beige;
-  }
-  &:disabled {
-    color: $light-french-beige;
   }
 }

@@ -1,13 +1,29 @@
-import './main.scss'; // this required to stay.
+import './main.scss'; // Do not remove this line
 
-const searchInput = document.querySelector('#search > input');
-const searchButton = document.querySelector('#search > div > button');
+const { isAlphanumeric } = require('../../utils/index');
+
+const searchInput = document.querySelector('#search input');
+const searchButton = document.querySelector('#search button');
+const searchWarningMessage = document.querySelector('#search-warning');
 
 searchInput.addEventListener('input', (e) => {
-  console.log(searchInput.value.length);
-  if (searchInput.value.length >= 4 && searchInput.value.length <= 25) {
-    searchButton.disabled = false;
+  const { value: inputValue } = e.target;
+  if (!inputValue.length > 0) {
+    searchWarningMessage.textContent = '';
+    searchWarningMessage.classList.remove('p-1');
+  } else if (inputValue.length >= 4 && inputValue.length <= 25) {
+    searchWarningMessage.textContent = '';
+    searchWarningMessage.classList.remove('p-1');
+    if (isAlphanumeric(inputValue)) {
+      searchButton.disabled = false;
+    } else {
+      searchButton.disabled = true;
+      searchWarningMessage.textContent = '* Username must only contain alphanumeric characters.';
+      searchWarningMessage.classList.add('p-1');
+    }
   } else {
-    console.log('failed');
+    searchButton.disabled = true;
+    searchWarningMessage.textContent = '* Username must be between 4 and 25 characters.';
+    searchWarningMessage.classList.add('p-1');
   }
 });

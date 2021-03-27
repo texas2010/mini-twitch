@@ -1,5 +1,7 @@
 const express = require('express');
 
+const { isAlphanumeric } = require('../../../utils');
+
 const router = express.Router();
 
 module.exports = () => {
