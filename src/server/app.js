@@ -5,8 +5,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const webpackAssets = require('express-webpack-assets');
 
+const Twitch = require('./twitch');
 const config = require('../config');
 const routes = require('./routes');
+
+Twitch.setAccessToken();
+console.log(Twitch);
 
 module.exports = () => {
   const app = express();
