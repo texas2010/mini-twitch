@@ -1,7 +1,7 @@
 extends parts/layout
 
 block title
-    title Mini Twitch - Home
+    title Mini Twitch - #{username || 'Home'}
 block content
     - var warningClasses = ['bg-danger', 'rounded', 'text-white', 'font-weight-bold', 'text-center']
     #search-wrapper.container
