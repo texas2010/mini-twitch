@@ -11,22 +11,12 @@ module.exports = () => {
     if (typeof search === 'string') {
       if (search && search.length >= 4 && search.length <= 25) {
         if (isAlphanumeric(search)) {
-          const isUsernameExist = await Twitch.isUsernameExist(search);
-          if (isUsernameExist.hasOwnProperty('exist')) {
-            if (isUsernameExist.exist) {
-              return res.render('index', {
-                username: search,
-                usernameExistMessage: 'Success! We will show result!',
-              });
-            }
-            return res.render('index', {
-              username: search,
-              warningMessage: '* Username is not exist in the Twitch.',
-            });
-          }
+          const data = await Twitch.getUserFollowListFirst(search);
+          console.log(data);
           return res.render('index', {
             username: search,
-            warningMessage: isUsernameExist.error,
+            warningMessage: data.errorMessage || undefined,
+            usernameExistMessage: data.isUsernameExist ? data.successMessage : '',
           });
         }
         return res.render('index', {
