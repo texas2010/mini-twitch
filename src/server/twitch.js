@@ -91,6 +91,10 @@ class Twitch {
     }
   }
 
+  async getFollowingArrayFromData(realData) {
+    return realData.map(({ to_login }) => to_login);
+  }
+
   async getUsersInformation(followingArr) {
     const queryArr = await followingArr.map(({ to_login }) => `login=${to_login}`).join('&');
     const url = await `https://api.twitch.tv/helix/users?${queryArr}`;
@@ -110,11 +114,13 @@ class Twitch {
   }
 
   async showFollowingListFirst(username) {
+    // Get User ID
     const dataObj = await this.getUserId(username);
-    console.log('user', dataObj);
+    // console.log('user', dataObj);
     if (dataObj.errorMessage) {
       return dataObj;
     }
+    // Get User Following
     const theirFollowingList = await this.getUserFollowing(dataObj.userId);
     // console.log('FollowingList', theirFollowingList);
     if (theirFollowingList.total === 0) {
@@ -122,8 +128,17 @@ class Twitch {
         errorMessage: `That username don't have following list`,
       };
     }
-    const finalTheirFollowingList = await this.getStreamsInformation(theirFollowingList.data);
-    console.log(finalTheirFollowingList);
+    // console.log(
+    //   theirFollowingList.hasOwnProperty('pagination') &&
+    //     theirFollowingList.pagination.hasOwnProperty('cursor')
+    // );
+
+    // convert data object to data array
+    const theirFollowingArray = await this.getFollowingArrayFromData(theirFollowingList.data);
+    console.log(theirFollowingArray);
+
+    // Get Users Information
+    // const getUsersInformation = await this.getUsersInformation()
 
     return {
       ...dataObj,
