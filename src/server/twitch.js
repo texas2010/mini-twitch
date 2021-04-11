@@ -42,7 +42,7 @@ class Twitch {
         headers: { Authorization: `Bearer ${this.accessToken}` },
       });
       const data = await res.json();
-      console.log('getValidAuth:', data);
+      // console.log('getValidAuth:', data);
       if (data.expires_in && data.expires_in > 0) {
         return true;
       }
@@ -121,6 +121,44 @@ class Twitch {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  async UsersAndStreamIntoOneData(usersArr, streamArr) {
+    const merge = (arr1, arr2) => {
+      const temp = [];
+
+      arr1.forEach((user) => {
+        arr2.forEach((stream) => {
+          if (user.login === stream.user_login) {
+            temp.push({ ...user, ...stream });
+          } else {
+            temp.push({ ...user });
+          }
+        });
+      });
+
+      return temp;
+    };
+    if (streamArr.length === 0) {
+      return usersArr;
+    }
+    return merge(
+      usersArr.map(({ login, display_name, description, profile_image_url }) => ({
+        login,
+        display_name,
+        description,
+        profile_image_url,
+      })),
+      streamArr.map(({ user_login, type, title, thumbnail_url, game_name, viewer_count }) => ({
+        user_login,
+        type,
+        title,
+        thumbnail_url,
+        game_name,
+        viewer_count,
+      }))
+    );
+  }
+
   async showFollowingListFirst(username) {
     // Get User ID
     const dataObj = await this.getUserId(username);
@@ -143,18 +181,21 @@ class Twitch {
 
     // Convert data object to data array
     const theirFollowingArray = await this.getFollowingArrayFromData(theirFollowingList.data);
-    console.log(theirFollowingArray);
 
     // Get Users Information
     const getUsersInformation = await this.getUsersInformation(theirFollowingArray);
-    // console.log(getUsersInformation);
-
+    // Get Streams Information
     const getStreamsInformation = await this.getStreamsInformation(theirFollowingArray);
-    console.log(getStreamsInformation);
+    // Full Data Information
+    const fullDataInformation = await this.UsersAndStreamIntoOneData(
+      getUsersInformation.data,
+      getStreamsInformation.data
+    );
 
     return {
       ...dataObj,
       successMessage: `That username have following list`,
+      fullDataInformation,
     };
   }
 }
