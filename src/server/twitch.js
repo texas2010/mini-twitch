@@ -91,7 +91,9 @@ class Twitch {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async getFollowingArrayFromData(realData) {
+    // eslint-disable-next-line camelcase
     return realData.map(({ to_login }) => to_login);
   }
 
@@ -142,12 +144,14 @@ class Twitch {
       return usersArr;
     }
     return merge(
+      // eslint-disable-next-line camelcase
       usersArr.map(({ login, display_name, description, profile_image_url }) => ({
         login,
         display_name,
         description,
         profile_image_url,
       })),
+      // eslint-disable-next-line camelcase
       streamArr.map(({ user_login, type, title, thumbnail_url, game_name, viewer_count }) => ({
         user_login,
         type,
