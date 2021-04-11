@@ -11,7 +11,7 @@ module.exports = () => {
     if (typeof search === 'string') {
       if (search && search.length >= 4 && search.length <= 25) {
         if (isAlphanumeric(search)) {
-          const data = await Twitch.getUserFollowListFirst(search);
+          const data = await Twitch.showFollowingListFirst(search);
           console.log(data);
           return res.render('index', {
             username: search,
