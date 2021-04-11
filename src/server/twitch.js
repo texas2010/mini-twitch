@@ -42,7 +42,7 @@ class Twitch {
         headers: { Authorization: `Bearer ${this.accessToken}` },
       });
       const data = await res.json();
-      // console.log('getValidAuth:', data);
+      console.log('getValidAuth:', data);
       if (data.expires_in && data.expires_in > 0) {
         return true;
       }

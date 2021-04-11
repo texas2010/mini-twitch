@@ -17,6 +17,7 @@ module.exports = () => {
             username: search,
             warningMessage: data.errorMessage || undefined,
             usernameExistMessage: data.isUsernameExist ? data.successMessage : '',
+            realData: data.fullDataInformation || undefined,
           });
         }
         return res.render('index', {

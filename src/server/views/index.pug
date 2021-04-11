@@ -3,7 +3,7 @@ extends parts/layout
 block title
     title Mini Twitch - #{username || 'Home'}
 block content
-    - var warningClasses = ['bg-danger', 'rounded', 'text-white', 'font-weight-bold', 'text-center']
+    - var messageClasses = ['rounded','font-weight-bold', 'text-center', 'text-white']
     #search-wrapper.container
         .row.justify-content-center
             .col-md-8.col-lg-6
@@ -20,5 +20,9 @@ block content
                     )
                     .input-group-append
                         button.btn.btn-outline-secondary(type="submit", disabled=true) Submit
-                p#search-warning(class=warningClasses class=warningMessage ? 'p-1' : '')= warningMessage
-                p.bg-success.rounded.text-white.text-center.font-weight-bold(class=usernameExistMessage ? 'p-1': '')= usernameExistMessage
+                p#search-warning.bg-danger(class=messageClasses class=warningMessage ? 'p-1' : '')= warningMessage
+                p.bg-success(class=messageClasses class=usernameExistMessage ? 'p-1': '')= usernameExistMessage
+    if realData
+        .container.mb-5
+            .row.justify-content-center
+                .col-md-8.col-lg-6
