@@ -96,21 +96,29 @@ class Twitch {
   }
 
   async getUsersInformation(followingArr) {
-    const queryArr = await followingArr.map(({ to_login }) => `login=${to_login}`).join('&');
-    const url = await `https://api.twitch.tv/helix/users?${queryArr}`;
-    const res = await fetch(url, {
-      headers: { 'client-id': this.clientId, Authorization: `Bearer ${this.accessToken}` },
-    });
-    // const usersObj = await res.json();
+    const query = await followingArr.map((username) => `login=${username}`).join('&');
+    try {
+      const url = await `https://api.twitch.tv/helix/users?${query}`;
+      const res = await fetch(url, {
+        headers: { 'client-id': this.clientId, Authorization: `Bearer ${this.accessToken}` },
+      });
+      return res.json();
+    } catch (error) {
+      throw new Error('Something wrong with it and try again.');
+    }
   }
 
   async getStreamsInformation(followingArr) {
-    const queryArr = await followingArr.map(({ to_login }) => `login=${to_login}`).join('&');
-    const url = await `https://api.twitch.tv/helix/users?${queryArr}`;
-    const res = await fetch(url, {
-      headers: { 'client-id': this.clientId, Authorization: `Bearer ${this.accessToken}` },
-    });
-    // const usersObj = await res.json();
+    const query = await followingArr.map((username) => `user_login=${username}`).join('&');
+    try {
+      const url = await `https://api.twitch.tv/helix/streams?${query}`;
+      const res = await fetch(url, {
+        headers: { 'client-id': this.clientId, Authorization: `Bearer ${this.accessToken}` },
+      });
+      return res.json();
+    } catch (error) {
+      throw new Error('Something wrong with it and try again.');
+    }
   }
 
   async showFollowingListFirst(username) {
@@ -133,12 +141,16 @@ class Twitch {
     //     theirFollowingList.pagination.hasOwnProperty('cursor')
     // );
 
-    // convert data object to data array
+    // Convert data object to data array
     const theirFollowingArray = await this.getFollowingArrayFromData(theirFollowingList.data);
     console.log(theirFollowingArray);
 
     // Get Users Information
-    // const getUsersInformation = await this.getUsersInformation()
+    const getUsersInformation = await this.getUsersInformation(theirFollowingArray);
+    // console.log(getUsersInformation);
+
+    const getStreamsInformation = await this.getStreamsInformation(theirFollowingArray);
+    console.log(getStreamsInformation);
 
     return {
       ...dataObj,
