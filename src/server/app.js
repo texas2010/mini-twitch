@@ -10,7 +10,6 @@ const config = require('../config');
 const routes = require('./routes');
 
 Twitch.setAccessToken();
-console.log(Twitch);
 
 module.exports = () => {
   const app = express();
