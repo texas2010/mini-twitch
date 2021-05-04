@@ -1,0 +1,19 @@
+- var messageClasses = ['rounded','font-weight-bold', 'text-center', 'text-white']
+#search-wrapper.container
+    .row.justify-content-center
+        .col-md-8.col-lg-6
+            form#search.input-group.mb-2(method="get")
+                input.form-control(
+                    type="text",
+                    name="search",
+                    placeholder="Username",
+                    aria-label="Username",
+                    aria-describedby="basic-addon2",
+                    value= username || '',
+                    minlength="4",
+                    maxlength="27"
+                )
+                .input-group-append
+                    button.btn.btn-outline-secondary(type="submit", disabled=true) Submit
+            p#search-warning.bg-danger(class=messageClasses class=warningMessage ? 'p-1' : '')= warningMessage
+            p.bg-success(class=messageClasses class=usernameExistMessage ? 'p-1': '')= usernameExistMessage
