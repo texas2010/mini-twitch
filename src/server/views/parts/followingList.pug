@@ -1,0 +1,31 @@
+.container.mb-5#following-list
+    .row.justify-content-center
+        .col-md-8.col-lg-6
+            each user in followingListData
+                .bg-dark-purple.mb-3.rounded
+                    .row.no-gutters
+                        .col-auto
+                            img(
+                                src= user.profile_image_url,
+                                alt= `${user.login}'s profile picture`
+                            ).profile-picture.rounded
+                        .col#user-information.mx-2.m-1
+                            .row.no-gutters
+                                .col
+                                    h4= user.login
+                                .col-auto
+                                    p: a.text-info(
+                                        href=`https://www.twitch.tv/${user.login}`, target="_blank", rel="noopener noreferrer") Their Profile
+                            .row.no-gutters
+                                .col
+                                    if user.description
+                                        p= user.description
+                                    else
+                                        p User don't have a description.
+                            if user.type && user.type.includes('live')
+                                .row.no-gutters
+                                    .col-auto
+                                        img(
+                                            //- src= user.thumbnail_url, 
+                                            alt=""
+                                        ).rounded
