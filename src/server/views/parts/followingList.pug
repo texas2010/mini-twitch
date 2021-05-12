@@ -1,8 +1,14 @@
 .container.mb-5#following-list
-    .row.justify-content-center
+    .row.justify-content-center.mb-3
         .col-md-8.col-lg-6
+            div.d-flex.justify-content-center#filter-buttons
+                button.btn.btn-primary.mx-2.px-2(type="button" name="all") Show All
+                button.btn.btn-primary.mx-2.px-2(type="button" name="online") Online
+                button.btn.btn-primary.mx-2.px-2(type="button" name="offline") Offline
+    .row.justify-content-center
+        .col-md-8.col-lg-6#show-stream
             each user in followingListData
-                .bg-dark-purple.mb-3.rounded(class= user.streamType && user.streamType.includes('live') ? 'online' : 'offline')
+                .bg-dark-purple.mb-3.rounded(class= user.streamType && user.streamType.includes('live') ? 'online-user' : 'offline-user')
                     .row.no-gutters#user-information
                         .col-auto
                             img(
@@ -31,7 +37,7 @@
                                     else
                                         p User don't have a description.
                     if user.streamType && user.streamType.includes('live')
-                        .row.no-gutters#stream-information.mt-2
+                        .row.no-gutters#stream-information.mt-2.pb-2
                             .col-auto
                                 img(
                                     src= user.streamThumbnailUrl, 
@@ -39,9 +45,21 @@
                                     title= `${user.username}'s Thumbnail Picture`
                                 ).rounded
                             .col.mx-2
-                                p= user.streamTitle
-                                p.mt-1= `${user.streamViewerCount} viewers`
-                                p= user.StreamGameName
-                            .col-auto
-                                div.mr-1.badge.badge-pill.badge-danger.text-white.px-2.py-1
-                                    span LIVE
+                                .row.no-gutters
+                                    .col
+                                        p.font-weight-bold #{user.streamTitle}
+                                    .col-auto
+                                        div.mr-1.badge.badge-pill.badge-danger.text-white.px-2.py-1
+                                            span LIVE
+                                .row.no-gutters
+                                    .col
+                                        p.mt-1= `${user.streamViewerCount} ${user.streamViewerCount === 1 ? 'viewer' : 'viewers'}`
+                                    .col-auto
+                                        if user.streamGameName
+                                            p.badge.badge-pill.category-tag.px-2.py-1 #{user.streamGameName}
+
+
+                    
+                                //- p.mt-1= `${user.streamViewerCount} ${user.streamViewerCount === 1 ? 'viewer' : 'viewers'}`
+                                //- if user.streamGameName
+                                //-     p.badge.badge-pill.category-tag.px-2.py-1 #{user.streamGameName}

@@ -40,6 +40,10 @@ header {
   .bg-dark-purple {
     background-color: $st-patricks-blue;
   }
+  .category-tag {
+    background-color: $dark-salmon;
+    color: $st-patricks-blue;
+  }
   * {
     color: white;
     margin: 0;
@@ -48,6 +52,12 @@ header {
   .profile-picture {
     width: 100px;
     height: 100px;
+  }
+  #show-stream.online .offline-user {
+    display: none;
+  }
+  #show-stream.offline .online-user {
+    display: none;
   }
 }
 
