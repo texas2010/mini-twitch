@@ -7,7 +7,6 @@
     "clean": "rm -rf dist/*",
     "prebuild": "npm run clean",
     "build": "NODE_ENV=production webpack",
-    "prestart": "npm run build",
     "start": "NODE_ENV=production node ./bin/www",
     "start:prod": "NODE_ENV=production node ./bin/www",
     "start:no-hmr": "NO_HMR=1 node ./bin/www",
