@@ -1,3 +1,4 @@
+// eslint-disable-next-line global-require
 if (process.env.NODE_ENV === 'development') require('dotenv').config();
 
 const fetch = require('node-fetch');
@@ -124,41 +125,34 @@ class Twitch {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async UsersAndStreamIntoOneData(usersArr, streamArr) {
-    const merge = (arr1, arr2) => {
-      const temp = [];
-
-      arr1.forEach((user) => {
-        arr2.forEach((stream) => {
-          if (user.login === stream.user_login) {
-            temp.push({ ...user, ...stream });
-          } else {
-            temp.push({ ...user });
-          }
-        });
+  async UsersAndStreamIntoOneData(usersArr, streamsArr) {
+    const newMerge = (arr1, arr2) => {
+      const hash = new Map();
+      arr1.concat(arr2).forEach((obj) => {
+        hash.set(obj.username_id, Object.assign(hash.get(obj.username_id) || {}, obj));
       });
-
-      return temp;
+      return Array.from(hash.values());
     };
-    if (streamArr.length === 0) {
+    if (streamsArr.length === 0) {
       return usersArr;
     }
-    return merge(
+    return newMerge(
       // eslint-disable-next-line camelcase
       usersArr.map(({ login, display_name, description, profile_image_url }) => ({
-        login,
-        display_name,
-        description,
-        profile_image_url,
+        username_id: login,
+        username: login,
+        userDisplayName: display_name,
+        userDescription: description,
+        userProfileImageUrl: profile_image_url,
       })),
       // eslint-disable-next-line camelcase
-      streamArr.map(({ user_login, type, title, thumbnail_url, game_name, viewer_count }) => ({
-        user_login,
-        type,
-        title,
-        thumbnail_url,
-        game_name,
-        viewer_count,
+      streamsArr.map(({ user_login, type, title, thumbnail_url, game_name, viewer_count }) => ({
+        username_id: user_login,
+        streamType: type,
+        streamTitle: title,
+        streamThumbnailUrl: thumbnail_url.replace(/{width}x{height}/, '160x100'),
+        streamGameName: game_name,
+        streamViewerCount: viewer_count,
       }))
     );
   }
@@ -173,6 +167,7 @@ class Twitch {
     // Get User Following
     const theirFollowingList = await this.getUserFollowing(dataObj.userId);
     // console.log('FollowingList', theirFollowingList);
+
     if (theirFollowingList.total === 0) {
       return {
         errorMessage: `That username don't have following list`,
@@ -185,16 +180,22 @@ class Twitch {
 
     // Convert data object to data array
     const theirFollowingArray = await this.getFollowingArrayFromData(theirFollowingList.data);
+    // console.log('theirFollowingArray', theirFollowingArray);
 
     // Get Users Information
     const getUsersInformation = await this.getUsersInformation(theirFollowingArray);
+    // console.log('getUsersInformation', getUsersInformation);
+
     // Get Streams Information
     const getStreamsInformation = await this.getStreamsInformation(theirFollowingArray);
+    // console.log('getStreamsInformation', getStreamsInformation);
+
     // Full Data Information
     const fullDataInformation = await this.UsersAndStreamIntoOneData(
       getUsersInformation.data,
       getStreamsInformation.data
     );
+    // console.log('fullDataInformation', fullDataInformation);
 
     return {
       ...dataObj,
