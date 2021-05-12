@@ -3,29 +3,45 @@
         .col-md-8.col-lg-6
             each user in followingListData
                 .bg-dark-purple.mb-3.rounded
-                    .row.no-gutters
+                    .row.no-gutters#user-information
                         .col-auto
                             img(
-                                src= user.profile_image_url,
-                                alt= `${user.login}'s profile picture`
+                                src= user.userProfileImageUrl,
+                                alt= `${user.username}'s Profile Picture`
+                                title= `${user.username}'s Profile Picture`
                             ).profile-picture.rounded
-                        .col#user-information.mx-2.m-1
-                            .row.no-gutters
+                        .col.mx-2.m-1
+                            .row.no-gutters.mb-1
                                 .col
-                                    h4= user.login
+                                    h4: a(
+                                        href=`https://www.twitch.tv/${user.username}`,
+                                        target="_blank",
+                                        rel="noopener noreferrer"
+                                    )= user.userDisplayName ? user.username : user.userDisplayName
                                 .col-auto
-                                    p: a.text-info(
-                                        href=`https://www.twitch.tv/${user.login}`, target="_blank", rel="noopener noreferrer") Their Profile
+                                    p: a(
+                                        href=`https://www.twitch.tv/${user.username}/about`, target="_blank",
+                                        rel="noopener noreferrer"
+                                        class="badge badge-pill badge-primary px-3 py-1"
+                                        ) Their Profile
                             .row.no-gutters
                                 .col
-                                    if user.description
-                                        p= user.description
+                                    if user.userDescription
+                                        p= user.userDescription
                                     else
                                         p User don't have a description.
-                            if user.type && user.type.includes('live')
-                                .row.no-gutters
-                                    .col-auto
-                                        img(
-                                            //- src= user.thumbnail_url, 
-                                            alt=""
-                                        ).rounded
+                    if user.streamType && user.streamType.includes('live')
+                        .row.no-gutters#stream-information.mt-2
+                            .col-auto
+                                img(
+                                    src= user.streamThumbnailUrl, 
+                                    alt= `${user.username}'s Thumbnail Picture`
+                                    title= `${user.username}'s Thumbnail Picture`
+                                ).rounded
+                            .col.mx-2
+                                p= user.streamTitle
+                                p.mt-1= `${user.streamViewerCount} viewers`
+                                p= user.StreamGameName
+                            .col-auto
+                                div.mr-1.badge.badge-pill.badge-danger.text-white.px-2.py-1
+                                    span LIVE
