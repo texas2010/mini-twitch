@@ -136,6 +136,7 @@ class Twitch {
       });
       return Array.from(hash.values());
     };
+    // eslint-disable-next-line camelcase
     const usersArr = rawUsersArr.map(({ login, display_name, description, profile_image_url }) => ({
       username_id: login,
       username: login,
@@ -144,6 +145,7 @@ class Twitch {
       userProfileImageUrl: profile_image_url,
     }));
     const streamsArr = rawStreamsArr.map(
+      // eslint-disable-next-line camelcase
       ({ user_login, type, title, thumbnail_url, game_name, viewer_count }) => ({
         username_id: user_login,
         streamType: type,
