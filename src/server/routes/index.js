@@ -12,7 +12,8 @@ module.exports = () => {
       if (search && search.length >= 4 && search.length <= 25) {
         if (isAlphanumeric(search)) {
           const data = await Twitch.showFollowingListFirst(search);
-          // console.log('Route Index Data', data);
+          // eslint-disable-next-line no-console
+          console.log('Route Index Data', data.fullDataInformation.length);
           return res.render('index', {
             username: search,
             warningMessage: data.errorMessage || undefined,
@@ -30,7 +31,7 @@ module.exports = () => {
         warningMessage: '* Username must be between 4 and 25 characters.',
       });
     }
-    res.render('index');
+    return res.render('index');
   });
   return router;
 };
