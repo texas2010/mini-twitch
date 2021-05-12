@@ -2,7 +2,7 @@
     .row.justify-content-center
         .col-md-8.col-lg-6
             each user in followingListData
-                .bg-dark-purple.mb-3.rounded
+                .bg-dark-purple.mb-3.rounded(class= user.streamType && user.streamType.includes('live') ? 'online' : 'offline')
                     .row.no-gutters#user-information
                         .col-auto
                             img(
