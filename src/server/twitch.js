@@ -125,7 +125,7 @@ class Twitch {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async UsersAndStreamIntoOneData(usersArr, streamsArr) {
+  async UsersAndStreamIntoOneData(rawUsersArr, rawStreamsArr) {
     const newMerge = (arr1, arr2) => {
       const hash = new Map();
       arr1.concat(arr2).forEach((obj) => {
@@ -133,28 +133,27 @@ class Twitch {
       });
       return Array.from(hash.values());
     };
-    if (streamsArr.length === 0) {
-      return usersArr;
-    }
-    return newMerge(
-      // eslint-disable-next-line camelcase
-      usersArr.map(({ login, display_name, description, profile_image_url }) => ({
-        username_id: login,
-        username: login,
-        userDisplayName: display_name,
-        userDescription: description,
-        userProfileImageUrl: profile_image_url,
-      })),
-      // eslint-disable-next-line camelcase
-      streamsArr.map(({ user_login, type, title, thumbnail_url, game_name, viewer_count }) => ({
+    const usersArr = rawUsersArr.map(({ login, display_name, description, profile_image_url }) => ({
+      username_id: login,
+      username: login,
+      userDisplayName: display_name,
+      userDescription: description,
+      userProfileImageUrl: profile_image_url,
+    }));
+    const streamsArr = rawStreamsArr.map(
+      ({ user_login, type, title, thumbnail_url, game_name, viewer_count }) => ({
         username_id: user_login,
         streamType: type,
         streamTitle: title,
-        streamThumbnailUrl: thumbnail_url.replace(/{width}x{height}/, '160x100'),
+        streamThumbnailUrl: thumbnail_url.replace(/{width}x{height}/, '180x100'),
         streamGameName: game_name,
         streamViewerCount: viewer_count,
-      }))
+      })
     );
+    if (streamsArr.length === 0) {
+      return usersArr;
+    }
+    return newMerge(usersArr, streamsArr);
   }
 
   async showFollowingListFirst(username) {
