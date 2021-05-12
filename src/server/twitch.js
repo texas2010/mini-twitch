@@ -1,4 +1,3 @@
-// eslint-disable-next-line global-require
 if (process.env.NODE_ENV === 'development') require('dotenv').config();
 
 const fetch = require('node-fetch');
@@ -20,8 +19,10 @@ class Twitch {
       const url = `https://id.twitch.tv/oauth2/token?client_id=${this.clientId}&client_secret=${this.clientSecret}&grant_type=client_credentials`;
       const res = await fetch(url, { method: 'POST' });
       const data = await res.json();
+      // eslint-disable-next-line no-console
       console.log('setAccessToken:', data);
       if (data.refresh_token) {
+        // eslint-disable-next-line no-console
         console.log('I got refresh token: ', data.refresh_token);
         return;
       }
@@ -43,6 +44,7 @@ class Twitch {
         headers: { Authorization: `Bearer ${this.accessToken}` },
       });
       const data = await res.json();
+      // eslint-disable-next-line no-console
       console.log('getValidAuth:', data);
       if (data.expires_in && data.expires_in > 0) {
         return true;
@@ -78,6 +80,7 @@ class Twitch {
     } catch (error) {
       throw new Error('Something wrong with it and try again.');
     }
+    return undefined;
   }
 
   async getUserFollowing(id) {
@@ -159,46 +162,35 @@ class Twitch {
   async showFollowingListFirst(username) {
     // Get User ID
     const dataObj = await this.getUserId(username);
-    // console.log('user', dataObj);
     if (dataObj.errorMessage) {
       return dataObj;
     }
     // Get User Following
     const theirFollowingList = await this.getUserFollowing(dataObj.userId);
-    // console.log('FollowingList', theirFollowingList);
 
     if (theirFollowingList.total === 0) {
       return {
         errorMessage: `That username don't have following list`,
       };
     }
-    // console.log(
-    //   theirFollowingList.hasOwnProperty('pagination') &&
-    //     theirFollowingList.pagination.hasOwnProperty('cursor')
-    // );
 
     // Convert data object to data array
     const theirFollowingArray = await this.getFollowingArrayFromData(theirFollowingList.data);
-    // console.log('theirFollowingArray', theirFollowingArray);
 
     // Get Users Information
     const getUsersInformation = await this.getUsersInformation(theirFollowingArray);
-    // console.log('getUsersInformation', getUsersInformation);
 
     // Get Streams Information
     const getStreamsInformation = await this.getStreamsInformation(theirFollowingArray);
-    // console.log('getStreamsInformation', getStreamsInformation);
 
     // Full Data Information
     const fullDataInformation = await this.UsersAndStreamIntoOneData(
       getUsersInformation.data,
       getStreamsInformation.data
     );
-    // console.log('fullDataInformation', fullDataInformation);
 
     return {
       ...dataObj,
-      successMessage: `That username have following list`,
       fullDataInformation,
     };
   }
