@@ -83,9 +83,14 @@ class Twitch {
     return undefined;
   }
 
-  async getUserFollowing(id) {
+  async getUserFollowing(id, pagination) {
     try {
-      const url = `https://api.twitch.tv/helix/users/follows?from_id=${id}`;
+      let url;
+      if (pagination) {
+        url = `https://api.twitch.tv/helix/users/follows?from_id=${id}&first=${80}&after=${pagination}`;
+      } else {
+        url = `https://api.twitch.tv/helix/users/follows?from_id=${id}&first=${80}`;
+      }
       const res = await fetch(url, {
         headers: { 'client-id': this.clientId, Authorization: `Bearer ${this.accessToken}` },
       });
