@@ -163,6 +163,52 @@ class Twitch {
     if (streamsArr.length === 0) {
       return usersArr;
     }
+    return merge(usersArr, streamsArr);
+  }
+
+  async getMoreDataPagination(userId, rawPagination) {
+    const theirFollowingList = await this.getUserFollowing(userId, rawPagination);
+    // console.log(theirFollowingList.pagination.cursor);
+    const theirFollowingArray = await this.getFollowingArrayFromData(theirFollowingList.data);
+
+    // Get Users Information
+    const getUsersInformation = await this.getUsersInformation(theirFollowingArray);
+
+    // Get Streams Information
+    const getStreamsInformation = await this.getStreamsInformation(theirFollowingArray);
+
+    // Full Data Information
+    const fullDataInformation = await this.UsersAndStreamIntoOneData(
+      getUsersInformation.data,
+      getStreamsInformation.data
+    );
+
+    return {
+      fullDataInformation,
+      pagination:
+        Object.prototype.hasOwnProperty.call(theirFollowingList, 'pagination') &&
+        Object.prototype.hasOwnProperty.call(theirFollowingList, 'cursor')
+          ? theirFollowingList.pagination.cursor
+          : false,
+    };
+  }
+
+  async getMoreDataInformation(userId, rawPagination) {
+    let newData;
+    await (async (callback) => {
+      let isPaginationExist = rawPagination || false;
+      const dataArr = [];
+      while (isPaginationExist) {
+        // eslint-disable-next-line no-await-in-loop
+        const data = await this.getMoreDataPagination(userId, isPaginationExist);
+        dataArr.push(...data.fullDataInformation);
+        isPaginationExist = data.pagination;
+      }
+      callback(dataArr);
+    })((dataArr) => {
+      newData = dataArr;
+    });
+    return newData;
   }
 
   async showFollowingListFirst(username) {
@@ -194,6 +240,23 @@ class Twitch {
       getUsersInformation.data,
       getStreamsInformation.data
     );
+
+    if (Object.prototype.hasOwnProperty.call(theirFollowingList, 'pagination')) {
+      if (Object.prototype.hasOwnProperty.call(theirFollowingList, 'cursor')) {
+        const moreDataInformation = await this.getMoreDataInformation(
+          dataObj.userId,
+          theirFollowingList.pagination.cursor
+        );
+        return {
+          ...dataObj,
+          fullDataInformation: fullDataInformation.concat(moreDataInformation),
+        };
+      }
+      return {
+        ...dataObj,
+        fullDataInformation,
+      };
+    }
 
     return {
       ...dataObj,
