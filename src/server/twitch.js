@@ -187,7 +187,7 @@ class Twitch {
       fullDataInformation,
       pagination:
         Object.prototype.hasOwnProperty.call(theirFollowingList, 'pagination') &&
-        Object.prototype.hasOwnProperty.call(theirFollowingList, 'cursor')
+        Object.prototype.hasOwnProperty.call(theirFollowingList.pagination, 'cursor')
           ? theirFollowingList.pagination.cursor
           : false,
     };
@@ -242,7 +242,7 @@ class Twitch {
     );
 
     if (Object.prototype.hasOwnProperty.call(theirFollowingList, 'pagination')) {
-      if (Object.prototype.hasOwnProperty.call(theirFollowingList, 'cursor')) {
+      if (Object.prototype.hasOwnProperty.call(theirFollowingList.pagination, 'cursor')) {
         const moreDataInformation = await this.getMoreDataInformation(
           dataObj.userId,
           theirFollowingList.pagination.cursor
