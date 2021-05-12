@@ -12,7 +12,7 @@ module.exports = () => {
       if (search && search.length >= 4 && search.length <= 25) {
         if (isAlphanumeric(search)) {
           const data = await Twitch.showFollowingListFirst(search);
-          console.log(data);
+          // console.log('Route Index Data', data);
           return res.render('index', {
             username: search,
             warningMessage: data.errorMessage || undefined,
