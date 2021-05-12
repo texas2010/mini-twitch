@@ -129,7 +129,7 @@ class Twitch {
 
   // eslint-disable-next-line class-methods-use-this
   async UsersAndStreamIntoOneData(rawUsersArr, rawStreamsArr) {
-    const newMerge = (arr1, arr2) => {
+    const merge = (arr1, arr2) => {
       const hash = new Map();
       arr1.concat(arr2).forEach((obj) => {
         hash.set(obj.username_id, Object.assign(hash.get(obj.username_id) || {}, obj));
@@ -158,7 +158,6 @@ class Twitch {
     if (streamsArr.length === 0) {
       return usersArr;
     }
-    return newMerge(usersArr, streamsArr);
   }
 
   async showFollowingListFirst(username) {
