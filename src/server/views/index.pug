@@ -1,9 +1,0 @@
-extends parts/layout
-
-block title
-    title Mini Twitch - #{username || 'Home'}
-block content
-    include ./parts/askUserInput
-    
-    if followingListData
-        include ./parts/followingList
