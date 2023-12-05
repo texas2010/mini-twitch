@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest",
-    "test:type": "vitest typecheck",
+    "test": "vitest --typecheck",
     "cy:test": "cypress open --env NODE_ENV=test",
     "cy:dev": "cypress open --env NODE_ENV=development",
     "cy:run": "cypress open --env NODE_ENV=test"
@@ -31,6 +30,6 @@
     "postcss": "^8",
     "tailwindcss": "^3",
     "typescript": "^5",
-    "vitest": "^0.34.6"
+    "vitest": "^1.0.1"
   }
 }
