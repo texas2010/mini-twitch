@@ -13,8 +13,13 @@ describe('Twitch Class Types', () => {
 
     type TwitchClient = typeof twitchClient;
 
-    expectTypeOf<TwitchClient['_clientId']>().toBeString();
-    expectTypeOf<TwitchClient['_clientSecret']>().toBeString();
-    expectTypeOf<TwitchClient['_accessToken']>().toBeString();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type MyProps = {
+      [K in keyof Twitch]: Twitch[K];
+    };
+
+    expectTypeOf<TwitchClient['_protected_clientId']>().toBeString();
+    expectTypeOf<TwitchClient['_protected_clientSecret']>().toBeString();
+    expectTypeOf<TwitchClient['_protected_accessToken']>().toBeString();
   });
 });
