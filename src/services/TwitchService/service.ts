@@ -1,12 +1,12 @@
-type Members = 'private' | 'protected' | 'public';
+import type { MemberVisibility } from '@/types';
 
 export class Twitch {
   protected readonly _protected_clientId: string;
   protected readonly _protected_clientSecret: string;
   protected _protected_accessToken: string;
 
-  public getMembers!: (keyword: Members) => string[];
-  public getMethods!: (keyword: Members) => string[];
+  public getMembers!: (keyword: MemberVisibility) => string[];
+  public getMethods!: (keyword: MemberVisibility) => string[];
 
   [key: string]: unknown;
 
@@ -33,7 +33,8 @@ export class Twitch {
 THIS IS ONLY TESTING for getMembers and getMethods
 */
 if (process.env.NODE_ENV === 'test') {
-  Twitch.prototype.getMembers = function (keyword: Members): string[] {
+  console.log('Twitch getMembers and getMethods:', process.env.NODE_ENV);
+  Twitch.prototype.getMembers = function (keyword: MemberVisibility): string[] {
     const keys: string[] = [];
 
     for (const key in this) {
@@ -52,7 +53,7 @@ if (process.env.NODE_ENV === 'test') {
 
     return keys;
   };
-  Twitch.prototype.getMethods = function (keyword: Members): string[] {
+  Twitch.prototype.getMethods = function (keyword: MemberVisibility): string[] {
     const methods: string[] = [];
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias

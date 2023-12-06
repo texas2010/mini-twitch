@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
+import { beforeAll, afterAll, describe, expect, test, vi } from 'vitest';
 
 import { Twitch } from './service';
 
@@ -6,7 +6,7 @@ const fakeTwitchClientId = '3b6a418d243a4b4383cc6c0b8ea070c7';
 const fakeTwitchClientSecret = 'd4a1e03abcf945698a6a4e4f76e8cc1a';
 
 describe('Twitch Class', () => {
-  describe('without Env data', () => {
+  describe('without Twitch Data in Env File', () => {
     test('should have Twitch Api Information in the Process Env before Twitch Class created', () => {
       try {
         new Twitch();
@@ -20,7 +20,7 @@ describe('Twitch Class', () => {
     });
   });
 
-  describe('with Env data', () => {
+  describe('with Twitch Data in Env File', () => {
     beforeAll(() => {
       vi.stubEnv('TWITCH_CLIENT_ID', fakeTwitchClientId);
       vi.stubEnv('TWITCH_CLIENT_SECRET', fakeTwitchClientSecret);
@@ -30,7 +30,16 @@ describe('Twitch Class', () => {
     });
 
     describe('THIS IS ONLY TESTING for getMembers and getMethods ', () => {
-      test('should have protected properties from getMembers', () => {
+      test('should have zero private properties from getMembers', () => {
+        const input = 'private';
+
+        const finalNum = 0;
+        const twitchClient = new Twitch();
+
+        expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
+      });
+
+      test('should have protected properties array from getMembers', () => {
         const input = 'protected';
         const twitchClient = new Twitch();
 
@@ -48,37 +57,67 @@ describe('Twitch Class', () => {
         expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
       });
 
-      test('should have private methods from getMethods', () => {
+      test('should have zero public properties from getMembers', () => {
+        const input = 'public';
+
+        const finalNum = 0;
+        const twitchClient = new Twitch();
+
+        expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
+      });
+
+      test('should have private methods array from getMethods', () => {
         const input = 'private';
         const twitchClient = new Twitch();
 
-        console.log('getMethods', input, twitchClient.getMethods(input));
-
         twitchClient.getMethods(input).forEach((str) => {
           expect(str).toContain(input);
         });
       });
 
-      test('should have protected methods from getMethods', () => {
+      test('should have one private methods from getMethods', () => {
+        const input = 'private';
+
+        const finalNum = 1;
+        const twitchClient = new Twitch();
+
+        expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
+      });
+
+      test('should have protected methods array from getMethods', () => {
         const input = 'protected';
         const twitchClient = new Twitch();
 
-        console.log('getMethods', input, twitchClient.getMethods(input));
-
         twitchClient.getMethods(input).forEach((str) => {
           expect(str).toContain(input);
         });
       });
 
-      test('should have public methods from getMethods', () => {
-        const input = 'public';
+      test('should have zero protected methods from getMethods', () => {
+        const input = 'protected';
+
+        const finalNum = 0;
         const twitchClient = new Twitch();
 
-        console.log('getMethods', input, twitchClient.getMethods(input));
+        expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
+      });
+
+      test('should have public methods array from getMethods', () => {
+        const input = 'public';
+        const twitchClient = new Twitch();
 
         twitchClient.getMethods(input).forEach((str) => {
           expect(str).toContain('testtest');
         });
+      });
+
+      test('should have zero public methods from getMethods', () => {
+        const input = 'public';
+
+        const finalNum = 0;
+        const twitchClient = new Twitch();
+
+        expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
       });
     });
 
