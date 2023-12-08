@@ -30,16 +30,10 @@ export class Twitch {
     return fn.apply(this, args) as ReturnType<T>;
   }
 
-  // private async _private_callBoundAsync<
-  //   T extends (...args: [...Parameters<T>]) => Promise<Promise<ReturnType<T>>>
-  // >(fn: T, ...args: [...Parameters<T>]): Promise<ReturnType<T>> {
-  //   return await fn.apply(this, args);
-  // }
-
   private async _private_callBoundAsync<
     T extends (...args: [...Parameters<T>]) => ReturnType<T>
-  >(fn: T, ...args: [...Parameters<T>]): Promise<ReturnType<T>> {
-    return fn.apply(this, args);
+  >(fn: T, ...args: [...Parameters<T>]): Promise<Awaited<ReturnType<T>>> {
+    return fn.apply(this, args) as Promise<Awaited<ReturnType<T>>>;
   }
 
   // protected _protected_setAccessToken

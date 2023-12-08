@@ -104,6 +104,18 @@ describe('Twitch Class', () => {
 
         await expect(result).resolves.toEqual(input);
       });
+
+      test('should handle rejection and return the expected error', async () => {
+        const fn = async function (param: string) {
+          throw new Error(param);
+        };
+        const twitchClient = new Twitch();
+        const input = 'Test error';
+
+        const result = twitchClient['_private_callBoundAsync'](fn, input);
+
+        await expect(result).rejects.toThrow(input);
+      });
     });
 
     describe('THIS IS ONLY TESTING for getMembers and getMethods ', () => {
