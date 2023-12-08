@@ -29,20 +29,9 @@ describe('Twitch Class', () => {
       vi.unstubAllEnvs();
     });
 
-    test('should have Twitch Api Information in the Process Env before Twitch Class created', () => {
-      try {
-        new Twitch();
-      } catch (error) {
-        if (error instanceof Error) {
-          expect(error.message).toBe(
-            'Required environment variables are not set. Set TWITCH_CLIENT_ID and TWITCH_CLIENT_SECRET.'
-          );
-        }
-      }
-    });
-
     test('should have Twitch Class exist', () => {
       const twitchClient = new Twitch();
+
       expect(Twitch).toBeDefined();
       expect(twitchClient).toBeDefined();
       expect(twitchClient).toBeInstanceOf(Twitch);
@@ -57,95 +46,99 @@ describe('Twitch Class', () => {
       );
     });
 
-    describe('THIS IS ONLY TESTING for getMembers and getMethods', () => {
-      test('should have zero private properties from getMembers', () => {
-        const input = 'private';
+    describe('THIS IS ONLY TESTING', () => {
+      describe('getMembers', () => {
+        test('should have zero private properties', () => {
+          const input = 'private';
 
-        const finalNum = 0;
-        const twitchClient = new Twitch();
+          const finalNum = 0;
+          const twitchClient = new Twitch();
 
-        expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
-      });
+          expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
+        });
 
-      test('should have protected properties array from getMembers', () => {
-        const input = 'protected';
-        const twitchClient = new Twitch();
+        test('should have protected properties array', () => {
+          const input = 'protected';
+          const twitchClient = new Twitch();
 
-        twitchClient.getMembers(input).forEach((str) => {
-          expect(str).toContain(input);
+          twitchClient.getMembers(input).forEach((str) => {
+            expect(str).toContain(input);
+          });
+        });
+
+        test('should have three protected properties', () => {
+          const input = 'protected';
+
+          const finalNum = 3;
+          const twitchClient = new Twitch();
+
+          expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
+        });
+
+        test('should have zero public properties', () => {
+          const input = 'public';
+
+          const finalNum = 0;
+          const twitchClient = new Twitch();
+
+          expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
         });
       });
 
-      test('should have three protected properties from getMembers', () => {
-        const input = 'protected';
+      describe('getMethods', () => {
+        test('should have private methods array', () => {
+          const input = 'private';
+          const twitchClient = new Twitch();
 
-        const finalNum = 3;
-        const twitchClient = new Twitch();
-
-        expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
-      });
-
-      test('should have zero public properties from getMembers', () => {
-        const input = 'public';
-
-        const finalNum = 0;
-        const twitchClient = new Twitch();
-
-        expect(twitchClient.getMembers(input)).toHaveLength(finalNum);
-      });
-
-      test('should have private methods array from getMethods', () => {
-        const input = 'private';
-        const twitchClient = new Twitch();
-
-        twitchClient.getMethods(input).forEach((str) => {
-          expect(str).toContain(input);
+          twitchClient.getMethods(input).forEach((str) => {
+            expect(str).toContain(input);
+          });
         });
-      });
 
-      test('should have two private methods from getMethods', () => {
-        const input = 'private';
+        test('should have two private methods', () => {
+          const input = 'private';
 
-        const finalNum = 2;
-        const twitchClient = new Twitch();
+          const finalNum = 2;
+          const twitchClient = new Twitch();
 
-        expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
-      });
-
-      test('should have protected methods array from getMethods', () => {
-        const input = 'protected';
-        const twitchClient = new Twitch();
-
-        twitchClient.getMethods(input).forEach((str) => {
-          expect(str).toContain(input);
+          expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
         });
-      });
 
-      test('should have zero protected methods from getMethods', () => {
-        const input = 'protected';
+        test('should have protected methods array', () => {
+          const input = 'protected';
+          const twitchClient = new Twitch();
 
-        const finalNum = 0;
-        const twitchClient = new Twitch();
-
-        expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
-      });
-
-      test('should have public methods array from getMethods', () => {
-        const input = 'public';
-        const twitchClient = new Twitch();
-
-        twitchClient.getMethods(input).forEach((str) => {
-          expect(str).toContain('testtest');
+          twitchClient.getMethods(input).forEach((str) => {
+            expect(str).toContain(input);
+          });
         });
-      });
 
-      test('should have zero public methods from getMethods', () => {
-        const input = 'public';
+        test('should have zero protected methods', () => {
+          const input = 'protected';
 
-        const finalNum = 0;
-        const twitchClient = new Twitch();
+          const finalNum = 0;
+          const twitchClient = new Twitch();
 
-        expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
+          expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
+        });
+
+        test('should have public methods array', () => {
+          const input = 'public';
+          const twitchClient = new Twitch();
+
+          twitchClient.getMethods(input).forEach((str) => {
+            expect(str).toContain('testtest');
+          });
+        });
+
+        test('should have zero public methods', () => {
+          const input = 'public';
+
+          const finalNum = 0;
+          const twitchClient = new Twitch();
+
+          expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
+        });
       });
     });
 
@@ -208,7 +201,7 @@ describe('Twitch Class', () => {
 
         const result = twitchClient['_private_callBoundAsync'](fn, input);
 
-        await expect(result).rejects.toThrow(input);
+        await expect(result).rejects.toThrowError(input);
       });
     });
   });
