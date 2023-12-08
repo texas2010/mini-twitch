@@ -1,4 +1,6 @@
 import type { MemberVisibility } from '@/types';
+import { getMembers } from './public/getMembers';
+import { getMethods } from './public/getMethods';
 
 export class Twitch {
   protected readonly _protected_clientId: string;
@@ -25,76 +27,28 @@ export class Twitch {
   private _private_callBound<
     T extends (...args: [...Parameters<T>]) => ReturnType<T>
   >(fn: T, ...args: [...Parameters<T>]): ReturnType<T> {
-    return fn.call(this, ...args) as ReturnType<T>;
+    return fn.apply(this, args) as ReturnType<T>;
   }
+
+  // private async _private_callBoundAsync<
+  //   T extends (...args: [...Parameters<T>]) => Promise<Promise<ReturnType<T>>>
+  // >(fn: T, ...args: [...Parameters<T>]): Promise<ReturnType<T>> {
+  //   return await fn.apply(this, args);
+  // }
+
+  private async _private_callBoundAsync<
+    T extends (...args: [...Parameters<T>]) => ReturnType<T>
+  >(fn: T, ...args: [...Parameters<T>]): Promise<ReturnType<T>> {
+    return fn.apply(this, args);
+  }
+
+  // protected _protected_setAccessToken
 }
 
 /*
 THIS IS ONLY TESTING for getMembers and getMethods
 */
 if (process.env.NODE_ENV === 'test') {
-  console.log('Twitch getMembers and getMethods:', process.env.NODE_ENV);
-  Twitch.prototype.getMembers = function (keyword: MemberVisibility): string[] {
-    const keys: string[] = [];
-
-    for (const key in this) {
-      if (typeof this[key] !== 'function') {
-        if (key.includes(keyword)) {
-          keys.push(key);
-        } else if (
-          keyword === 'public' &&
-          !key.includes('private') &&
-          !key.includes('protected')
-        ) {
-          keys.push(key);
-        }
-      }
-    }
-
-    return keys;
-  };
-  Twitch.prototype.getMethods = function (keyword: MemberVisibility): string[] {
-    const methods: string[] = [];
-
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    let currentPrototype = this;
-
-    while (currentPrototype !== null) {
-      for (const key of Object.getOwnPropertyNames(currentPrototype)) {
-        if (typeof currentPrototype[key] === 'function') {
-          const ignoredItems = [
-            'constructor',
-            'toString',
-            'valueOf',
-            '__defineGetter__',
-            '__defineSetter__',
-            'hasOwnProperty',
-            '__lookupGetter__',
-            '__lookupSetter__',
-            'isPrototypeOf',
-            'propertyIsEnumerable',
-            'toLocaleString',
-            'getMembers',
-            'getMethods',
-          ];
-          if (ignoredItems.includes(key)) {
-            continue;
-          }
-          if (key.includes(keyword)) {
-            methods.push(key);
-          } else if (
-            keyword === 'public' &&
-            !key.includes('private') &&
-            !key.includes('protected')
-          ) {
-            methods.push(key);
-          }
-        }
-      }
-
-      currentPrototype = Object.getPrototypeOf(currentPrototype);
-    }
-
-    return methods;
-  };
+  Twitch.prototype.getMembers = getMembers;
+  Twitch.prototype.getMethods = getMethods;
 }
