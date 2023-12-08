@@ -57,68 +57,7 @@ describe('Twitch Class', () => {
       );
     });
 
-    describe('_private_callBound method', () => {
-      test('should have method', () => {
-        const twitchClient = new Twitch();
-
-        expect(twitchClient['_private_callBound']).toBeDefined();
-      });
-
-      test('should handle valid input and return the expected result', () => {
-        const input = 'test test';
-        const fn = function (param: string) {
-          return param;
-        };
-        const twitchClient = new Twitch();
-
-        expect(twitchClient['_private_callBound'](fn, input)).toBe(input);
-      });
-
-      test('should handle three valid inputs and return the expected result', () => {
-        const fn = function (first: string, second: number, third: string[]) {
-          return `${first} ${second} - ${third.join(' ')}`;
-        };
-        const twitchClient = new Twitch();
-
-        expect(
-          twitchClient['_private_callBound'](fn, 'first', 2, ['third', 'third'])
-        ).toBe('first 2 - third third');
-      });
-    });
-
-    describe('_private_callBoundAsync method', () => {
-      test('should have method', () => {
-        const twitchClient = new Twitch();
-
-        expect(twitchClient['_private_callBoundAsync']).toBeDefined();
-      });
-
-      test('should handle valid input and return the expected result', async () => {
-        const fn = async function (param: string) {
-          return param;
-        };
-        const twitchClient = new Twitch();
-        const input = 'test test';
-
-        const result = twitchClient['_private_callBoundAsync'](fn, input);
-
-        await expect(result).resolves.toEqual(input);
-      });
-
-      test('should handle rejection and return the expected error', async () => {
-        const fn = async function (param: string) {
-          throw new Error(param);
-        };
-        const twitchClient = new Twitch();
-        const input = 'Test error';
-
-        const result = twitchClient['_private_callBoundAsync'](fn, input);
-
-        await expect(result).rejects.toThrow(input);
-      });
-    });
-
-    describe('THIS IS ONLY TESTING for getMembers and getMethods ', () => {
+    describe('THIS IS ONLY TESTING for getMembers and getMethods', () => {
       test('should have zero private properties from getMembers', () => {
         const input = 'private';
 
@@ -207,6 +146,69 @@ describe('Twitch Class', () => {
         const twitchClient = new Twitch();
 
         expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
+      });
+    });
+
+    describe('_private_callBound method', () => {
+      test('should have method', () => {
+        const twitchClient = new Twitch();
+
+        expect(twitchClient['_private_callBound']).toBeDefined();
+      });
+
+      test('should handle valid input and return the expected result', () => {
+        const input = 'test test';
+        const fn = function (param: string) {
+          return param;
+        };
+        const twitchClient = new Twitch();
+
+        const result = twitchClient['_private_callBound'](fn, input);
+
+        expect(result).toBe(input);
+      });
+
+      test('should handle three valid inputs and return the expected result', () => {
+        const fn = function (first: string, second: number, third: string[]) {
+          return `${first} ${second} - ${third.join(' ')}`;
+        };
+        const twitchClient = new Twitch();
+
+        expect(
+          twitchClient['_private_callBound'](fn, 'first', 2, ['third', 'third'])
+        ).toBe('first 2 - third third');
+      });
+    });
+
+    describe('_private_callBoundAsync method', () => {
+      test('should have method', () => {
+        const twitchClient = new Twitch();
+
+        expect(twitchClient['_private_callBoundAsync']).toBeDefined();
+      });
+
+      test('should handle valid input and return the expected result', async () => {
+        const fn = async function (param: string) {
+          return param;
+        };
+        const twitchClient = new Twitch();
+        const input = 'test test';
+
+        const result = twitchClient['_private_callBoundAsync'](fn, input);
+
+        await expect(result).resolves.toEqual(input);
+      });
+
+      test('should handle rejection and return the expected error', async () => {
+        const fn = async function (param: string) {
+          throw new Error(param);
+        };
+        const twitchClient = new Twitch();
+        const input = 'Test error';
+
+        const result = twitchClient['_private_callBoundAsync'](fn, input);
+
+        await expect(result).rejects.toThrow(input);
       });
     });
   });
