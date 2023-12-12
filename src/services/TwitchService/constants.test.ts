@@ -5,5 +5,4 @@ describe('constants', () => {
   test('should have TWITCH_APP_ACCESS_TOKEN_ID', () => {
     expect(TWITCH_APP_ACCESS_TOKEN_ID).toBe('TWITCH_APP_ACCESS_TOKEN_ID');
   });
-  test('should first', () => {});
 });
