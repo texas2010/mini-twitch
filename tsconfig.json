@@ -23,6 +23,7 @@
     "paths": {
       "@/*": ["./*"],
       "@/components": ["./components/*"],
+      "@/db": ["./db/*"],
       "@/hooks": ["./hooks/*"],
       "@/services": ["./services/*"],
       "@/styles": ["./styles/*"],
