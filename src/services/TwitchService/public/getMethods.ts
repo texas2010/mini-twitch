@@ -1,5 +1,5 @@
 import { MemberVisibility } from '@/types';
-import { Twitch } from '../service';
+import Twitch from '../service';
 
 const ignoredItems = [
   'constructor',
@@ -22,9 +22,7 @@ export const getMethods = function (
   keyword: MemberVisibility
 ): string[] {
   const methods: string[] = [];
-
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  let currentPrototype = this;
+  let currentPrototype = this as Twitch;
 
   while (currentPrototype !== null) {
     for (const key of Object.getOwnPropertyNames(currentPrototype)) {

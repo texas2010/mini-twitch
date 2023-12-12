@@ -2,7 +2,7 @@ import type { MemberVisibility } from '@/types';
 import { getMembers } from './public/getMembers';
 import { getMethods } from './public/getMethods';
 
-export class Twitch {
+class Twitch {
   protected readonly _protected_clientId: string;
   protected readonly _protected_clientSecret: string;
   protected _protected_accessToken: string;
@@ -46,3 +46,5 @@ if (process.env.NODE_ENV === 'test') {
   Twitch.prototype.getMembers = getMembers;
   Twitch.prototype.getMethods = getMethods;
 }
+
+export default Twitch;

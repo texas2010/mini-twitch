@@ -11,7 +11,7 @@ datasource db {
 }
 
 model TwitchAccessToken {
-  id        String   @id @default("twitch_app_access_token_id") @map("_id")
+  id        String   @id @default("TWITCH_APP_ACCESS_TOKEN_ID") @map("_id")
   token     String   @unique
   timestamp Int
 }

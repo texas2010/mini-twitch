@@ -1,6 +1,6 @@
 import { beforeAll, afterAll, describe, expect, test, vi } from 'vitest';
 
-import { Twitch } from './service';
+import Twitch from './service';
 
 const fakeTwitchClientId = '3b6a418d243a4b4383cc6c0b8ea070c7';
 const fakeTwitchClientSecret = 'd4a1e03abcf945698a6a4e4f76e8cc1a';

@@ -1,1 +1,1 @@
-export const TwitchAppAccessTokenId = 'twitch_app_access_token_id' as const;
+export const TWITCH_APP_ACCESS_TOKEN_ID = 'TWITCH_APP_ACCESS_TOKEN_ID' as const;

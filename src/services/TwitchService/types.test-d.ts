@@ -1,5 +1,5 @@
 import { describe, test, expectTypeOf } from 'vitest';
-import { Twitch } from './service';
+import Twitch from './service';
 import { MemberVisibility } from '@/types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -139,7 +139,7 @@ describe('Twitch Class Types', () => {
       expectTypeOf(result).not.resolves.toBeAny();
     });
 
-    test('should handle valid object inputs and return the expected result', async () => {
+    test('should handle valid object input and return the expected result', async () => {
       const fn = async function (para: string) {
         return {
           data: para,

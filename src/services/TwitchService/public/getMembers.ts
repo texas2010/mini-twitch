@@ -1,5 +1,5 @@
 import { MemberVisibility } from '@/types';
-import { Twitch } from '../service';
+import Twitch from '../service';
 
 export const getMembers = function (
   this: Twitch,

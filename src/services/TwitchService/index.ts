@@ -1,4 +1,4 @@
-import { Twitch } from './service';
+import Twitch from './service';
 
 const twitchClient = new Twitch();
 

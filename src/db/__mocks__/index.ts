@@ -1,3 +1,3 @@
-import prismaMocked from './prisma';
+import prismaMock from './prisma';
 
-export { prismaMocked };
+export { prismaMock };
