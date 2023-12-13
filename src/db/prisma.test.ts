@@ -12,7 +12,6 @@ describe('prisma', () => {
     test('should have token and timestamp after create data', async () => {
       const token = {
         token: 'test test',
-        timestamp: Date.now(),
       };
 
       prismaMock.twitchAccessToken.create.mockResolvedValue({
@@ -33,7 +32,6 @@ describe('prisma', () => {
     test('should return valid data when it use findUnique method', async () => {
       const token = {
         token: 'asdfasdf',
-        timestamp: Date.now(),
       };
 
       prismaMock.twitchAccessToken.findUnique.mockResolvedValue({
@@ -56,7 +54,6 @@ describe('prisma', () => {
     test('should return valid data when it use update method', async () => {
       const token = {
         token: 'asdfasdf',
-        timestamp: Date.now(),
       };
 
       prismaMock.twitchAccessToken.update.mockResolvedValue({
