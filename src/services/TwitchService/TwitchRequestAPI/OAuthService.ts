@@ -1,3 +1,4 @@
+import { envConfigData } from '@/utils/generateConfigHelper';
 import axios, { AxiosResponse } from 'axios';
 
 export interface AccessTokenSuccessResponse {
@@ -52,14 +53,13 @@ export const OAuthService = {
       '/token',
       {
         grant_type: 'client_credentials',
-        client_id: process.env.TWITCH_CLIENT_ID!,
+        client_id: envConfigData.TWITCH_CLIENT_ID!,
         client_secret: process.env.TWITCH_CLIENT_SECRET!,
       },
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        signal: AbortSignal.timeout(1000),
       }
     );
   },

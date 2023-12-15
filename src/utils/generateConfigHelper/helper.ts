@@ -1,4 +1,4 @@
-export interface CustomProcessEnv extends NodeJS.ProcessEnv {
+export interface CustomProcessEnv {
   DATABASE_URL: string;
   TWITCH_CLIENT_ID: string;
   TWITCH_CLIENT_SECRET: string;
@@ -10,13 +10,12 @@ const requiredEnvVariables = [
   'TWITCH_CLIENT_SECRET',
 ] as (keyof CustomProcessEnv)[];
 
-export const generateConfig = () => {
-  if (process.env.NODE_ENV !== 'test') {
-    console.log('generateConfig running');
-  }
-  const obj: {
-    [key: keyof CustomProcessEnv]: unknown;
-  } = {};
+export const generateConfig = (): CustomProcessEnv => {
+  console.log('helper DATABASE_URL', process.env.DATABASE_URL);
+  console.log('helper TWITCH_CLIENT_ID', process.env.TWITCH_CLIENT_ID);
+  console.log('helper TWITCH_CLIENT_SECRET', process.env.TWITCH_CLIENT_SECRET);
+
+  const obj: Partial<CustomProcessEnv> = {};
 
   for (let i = 0; i < requiredEnvVariables.length; i++) {
     const envVarName: keyof CustomProcessEnv = requiredEnvVariables[i];
@@ -28,5 +27,5 @@ export const generateConfig = () => {
     obj[envVarName] = process.env[envVarName];
   }
 
-  return obj;
+  return obj as CustomProcessEnv;
 };
