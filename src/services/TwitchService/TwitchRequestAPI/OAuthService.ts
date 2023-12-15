@@ -1,5 +1,4 @@
-import TwitchOAuth from './OAuthConfig';
-import type { AxiosResponse } from './OAuthConfig';
+import axios, { AxiosResponse } from 'axios';
 
 export interface AccessTokenSuccessResponse {
   access_token: string;
@@ -25,6 +24,24 @@ type TwitchAuthPara = Parameters<TwitchAuth>;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TwitchAuthReturn = ReturnType<TwitchAuth>;
 
+const TwitchOAuth = axios.create({
+  baseURL: 'https://id.twitch.tv/oauth2/',
+});
+
+TwitchOAuth.interceptors.request.use((config) => {
+  console.log(config);
+  return config;
+});
+
+// TwitchOAuth.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
 export const OAuthService = {
   getAccessToken: async () => {
     return await TwitchOAuth.post<
@@ -42,6 +59,7 @@ export const OAuthService = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
+        signal: AbortSignal.timeout(1000),
       }
     );
   },
