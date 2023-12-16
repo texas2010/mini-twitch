@@ -30,13 +30,6 @@ describe('TwitchOAuth', () => {
     vi.stubEnv('TWITCH_CLIENT_ID', 'justrandomwordsandletter');
     vi.stubEnv('TWITCH_CLIENT_SECRET', 'randomrandomwords');
 
-    console.log('beforeEach DATABASE_URL', process.env.DATABASE_URL);
-    console.log('beforeEach TWITCH_CLIENT_ID', process.env.TWITCH_CLIENT_ID);
-    console.log(
-      'beforeEach TWITCH_CLIENT_SECRET',
-      process.env.TWITCH_CLIENT_SECRET
-    );
-
     axiosMock.get.mockReset();
     axiosMock.post.mockReset();
   });

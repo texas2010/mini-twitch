@@ -1,4 +1,4 @@
-import { envConfigData } from '@/utils/generateConfigHelper';
+import { generateConfig } from '@/utils/generateConfigHelper';
 import axios, { AxiosResponse } from 'axios';
 
 export interface AccessTokenSuccessResponse {
@@ -13,18 +13,6 @@ export interface AccessTokenRequest {
   grant_type: 'client_credentials';
 }
 
-type TwitchAuth = typeof TwitchOAuth.post<
-  AccessTokenSuccessResponse,
-  AxiosResponse<AccessTokenSuccessResponse, AccessTokenRequest>,
-  AccessTokenRequest
->;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type TwitchAuthPara = Parameters<TwitchAuth>;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type TwitchAuthReturn = ReturnType<TwitchAuth>;
-
 const TwitchOAuth = axios.create({
   baseURL: 'https://id.twitch.tv/oauth2/',
 });
@@ -34,17 +22,9 @@ TwitchOAuth.interceptors.request.use((config) => {
   return config;
 });
 
-// TwitchOAuth.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 export const OAuthService = {
   getAccessToken: async () => {
+    const { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } = generateConfig();
     return await TwitchOAuth.post<
       AccessTokenSuccessResponse,
       AxiosResponse<AccessTokenSuccessResponse, AccessTokenRequest>,
@@ -53,8 +33,8 @@ export const OAuthService = {
       '/token',
       {
         grant_type: 'client_credentials',
-        client_id: envConfigData.TWITCH_CLIENT_ID!,
-        client_secret: process.env.TWITCH_CLIENT_SECRET!,
+        client_id: TWITCH_CLIENT_ID,
+        client_secret: TWITCH_CLIENT_SECRET,
       },
       {
         headers: {
