@@ -43,32 +43,40 @@ describe('TwitchOAuth', () => {
       expect(OAuthService.getAccessToken).toBeDefined();
     });
 
-    test('should resolved when it getting valid token', async () => {
+    test('should resolved when it getting valid access token', async () => {
       const data = {
         access_token: 'asdf_asdf',
         expires_in: 600,
         token_type: 'asdf',
       };
 
-      axiosMock.post.mockResolvedValue({
-        data,
-      });
+      const { access_token } = data;
 
-      await expect(OAuthService.getAccessToken()).resolves.toStrictEqual({
-        data,
-      });
+      axiosMock.post.mockResolvedValue({ data });
+
+      await expect(OAuthService.getAccessToken()).resolves.toBe(access_token);
     });
 
-    test('should rejected when request is wrong', async () => {
-      const data = {
+    test('should rejected when it make bad request', async () => {
+      const res = {
         status: 400,
       };
 
-      axiosMock.post.mockRejectedValue({ data });
+      axiosMock.post.mockRejectedValue(res);
 
-      await expect(OAuthService.getAccessToken()).rejects.toStrictEqual({
-        data,
-      });
+      await expect(OAuthService.getAccessToken()).rejects.toStrictEqual(res);
+    });
+
+    test('should rejected when it do not have access token', async () => {
+      const res = {
+        status: 200,
+      };
+
+      axiosMock.post.mockResolvedValue(res);
+
+      await expect(OAuthService.getAccessToken()).rejects.toThrowError(
+        'App Access Token is not exist'
+      );
     });
   });
 });
