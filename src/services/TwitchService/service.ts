@@ -1,6 +1,7 @@
 import type { MemberVisibility } from '@/types';
 import { getMembers } from './public/getMembers';
 import { getMethods } from './public/getMethods';
+import { generateConfig } from '@/utils/generateConfigHelper';
 
 class Twitch {
   protected readonly _protected_clientId: string;
@@ -13,14 +14,10 @@ class Twitch {
   [key: string]: unknown;
 
   constructor() {
-    if (!process.env.TWITCH_CLIENT_ID || !process.env.TWITCH_CLIENT_SECRET) {
-      throw new Error(
-        'Required environment variables are not set. Set TWITCH_CLIENT_ID and TWITCH_CLIENT_SECRET.'
-      );
-    }
+    const { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } = generateConfig();
 
-    this._protected_clientId = process.env.TWITCH_CLIENT_ID;
-    this._protected_clientSecret = process.env.TWITCH_CLIENT_SECRET;
+    this._protected_clientId = TWITCH_CLIENT_ID;
+    this._protected_clientSecret = TWITCH_CLIENT_SECRET;
     this._protected_accessToken = '';
   }
 

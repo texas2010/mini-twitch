@@ -1,4 +1,4 @@
-import { beforeAll, afterAll, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 
 import Twitch from './service';
 
@@ -7,13 +7,36 @@ const fakeTwitchClientSecret = 'd4a1e03abcf945698a6a4e4f76e8cc1a';
 
 describe('Twitch Class', () => {
   describe('without Twitch Data in Env File', () => {
-    test('should have not Twitch Api Information in the Process Env before Twitch Class created', () => {
+    beforeEach(() => {
+      vi.stubEnv('DATABASE_URL', 'fake_database_long_url');
+    });
+
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    test('should throw an error when Twitch Api Env variable does not exist before Twitch Class Created', () => {
       try {
         new Twitch();
       } catch (error) {
         if (error instanceof Error) {
-          expect(error.message).toBe(
-            'Required environment variables are not set. Set TWITCH_CLIENT_ID and TWITCH_CLIENT_SECRET.'
+          expect(error.message).toMatch(
+            /Missing required environment variable/
+          );
+        }
+      }
+    });
+
+    test('should throw an error when Twitch Api Env Variable string is empty before Twitch Class Created', () => {
+      vi.stubEnv('TWITCH_CLIENT_ID', '');
+      vi.stubEnv('TWITCH_CLIENT_SECRET', '');
+
+      try {
+        new Twitch();
+      } catch (error) {
+        if (error instanceof Error) {
+          expect(error.message).toMatch(
+            /Missing required environment variable/
           );
         }
       }
@@ -21,11 +44,12 @@ describe('Twitch Class', () => {
   });
 
   describe('with Twitch Data in Env File', () => {
-    beforeAll(() => {
+    beforeEach(() => {
+      vi.stubEnv('DATABASE_URL', 'fake_database_long_url');
       vi.stubEnv('TWITCH_CLIENT_ID', fakeTwitchClientId);
       vi.stubEnv('TWITCH_CLIENT_SECRET', fakeTwitchClientSecret);
     });
-    afterAll(() => {
+    afterEach(() => {
       vi.unstubAllEnvs();
     });
 
