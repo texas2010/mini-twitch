@@ -47,4 +47,14 @@ describe('generateConfig helper', () => {
       TWITCH_CLIENT_SECRET: 'randomrandomwords',
     });
   });
+
+  test('should throw an error when it have empty string', () => {
+    vi.stubEnv('DATABASE_URL', 'fake_database_long_url');
+    vi.stubEnv('TWITCH_CLIENT_ID', '');
+    vi.stubEnv('TWITCH_CLIENT_SECRET', '');
+
+    expect(() => generateConfig()).toThrowError(
+      /Missing required environment variable/
+    );
+  });
 });
