@@ -11,6 +11,9 @@ const requiredEnvVariables = [
 ] as (keyof CustomProcessEnv)[];
 
 export const generateConfig = () => {
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('generateConfig running');
+  }
   const obj: Partial<CustomProcessEnv> = {};
 
   for (let i = 0; i < requiredEnvVariables.length; i++) {
