@@ -1,9 +1,32 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
 
 import Twitch from './service';
+import { fetchAndSetAccessTokenInDatabase } from './protected';
 
 const fakeTwitchClientId = '3b6a418d243a4b4383cc6c0b8ea070c7';
 const fakeTwitchClientSecret = 'd4a1e03abcf945698a6a4e4f76e8cc1a';
+
+const axiosMock = vi.hoisted(() => ({
+  get: vi.fn(),
+  post: vi.fn(),
+}));
+
+vi.mock('axios', async (importActual) => {
+  const actual = await importActual<typeof import('axios')>();
+
+  const mockAxios = {
+    default: {
+      ...actual.default,
+      create: vi.fn(() => ({
+        ...actual.default.create(),
+        get: axiosMock.get,
+        post: axiosMock.post,
+      })),
+    },
+  };
+
+  return mockAxios;
+});
 
 describe('Twitch Class', () => {
   describe('without Twitch Data in Env File', () => {
@@ -263,6 +286,51 @@ describe('Twitch Class', () => {
         const result = twitchClient['_private_callBoundAsync'](fn);
 
         await expect(result).rejects.toThrowError(input);
+      });
+    });
+
+    describe('_protected_fetchAndSetAccessTokenInDatabase method', () => {
+      beforeEach(() => {
+        axiosMock.get.mockReset();
+        axiosMock.post.mockReset();
+      });
+      test('should have method', () => {
+        const twitchClient = new Twitch();
+        const method =
+          twitchClient['_protected_fetchAndSetAccessTokenInDatabase'];
+
+        expect(fetchAndSetAccessTokenInDatabase).toBeDefined();
+        expect(method).toBeDefined();
+      });
+
+      test('should have app access token in the _protected_accessToken value', async () => {
+        const appAccessToken = 'random_app_access_token';
+        const data = {
+          access_token: appAccessToken,
+        };
+        const twitchClient = new Twitch();
+
+        axiosMock.post.mockResolvedValue({
+          data,
+        });
+
+        await twitchClient['_protected_fetchAndSetAccessTokenInDatabase']();
+
+        expect(twitchClient['_protected_accessToken']).toBe(appAccessToken); // must validate
+      });
+
+      test('should rejected when app access token is not exist when fetch twitch api', async () => {
+        const res = {
+          status: 400,
+        };
+        const twitchClient = new Twitch();
+
+        axiosMock.post.mockRejectedValue(res);
+
+        const method =
+          twitchClient['_protected_fetchAndSetAccessTokenInDatabase']();
+
+        await expect(method).rejects.toStrictEqual(res);
       });
     });
   });

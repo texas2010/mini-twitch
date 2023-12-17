@@ -3,8 +3,8 @@ import Twitch from '../service';
 
 export const fetchAndSetAccessTokenInDatabase = async function (this: Twitch) {
   try {
-    const res = await OAuthService.getAccessToken();
-    return res;
+    const accessToken = await OAuthService.getAccessToken();
+    this._protected_accessToken = accessToken;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
