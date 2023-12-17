@@ -137,10 +137,10 @@ describe('Twitch Class', () => {
           });
         });
 
-        test('should have zero protected methods', () => {
+        test('should have one protected methods', () => {
           const input = 'protected';
 
-          const finalNum = 0;
+          const finalNum = 1;
           const twitchClient = new Twitch();
 
           expect(twitchClient.getMethods(input)).toHaveLength(finalNum);
@@ -171,6 +171,18 @@ describe('Twitch Class', () => {
         const twitchClient = new Twitch();
 
         expect(twitchClient['_private_callBound']).toBeDefined();
+      });
+
+      test('should handle zero input and return the expected result', () => {
+        const input = 'zero input';
+        const fn = function () {
+          return input;
+        };
+        const twitchClient = new Twitch();
+
+        const result = twitchClient['_private_callBound'](fn);
+
+        expect(result).toBe(input);
       });
 
       test('should handle valid input and return the expected result', () => {
@@ -204,6 +216,19 @@ describe('Twitch Class', () => {
         expect(twitchClient['_private_callBoundAsync']).toBeDefined();
       });
 
+      test('should handle zero input and return the expected result', async () => {
+        const input = 'zero input';
+        const fn = async function () {
+          return input;
+        };
+
+        const twitchClient = new Twitch();
+
+        const result = twitchClient['_private_callBoundAsync'](fn);
+
+        await expect(result).resolves.toBe(input);
+      });
+
       test('should handle valid input and return the expected result', async () => {
         const fn = async function (param: string) {
           return param;
@@ -224,6 +249,18 @@ describe('Twitch Class', () => {
         const input = 'Test error';
 
         const result = twitchClient['_private_callBoundAsync'](fn, input);
+
+        await expect(result).rejects.toThrowError(input);
+      });
+
+      test('should handle rejection with zero input and return the expected error', async () => {
+        const input = 'Test error';
+        const fn = async function () {
+          throw new Error(input);
+        };
+        const twitchClient = new Twitch();
+
+        const result = twitchClient['_private_callBoundAsync'](fn);
 
         await expect(result).rejects.toThrowError(input);
       });

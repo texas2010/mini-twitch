@@ -1,7 +1,8 @@
 import type { MemberVisibility } from '@/types';
-import { getMembers } from './public/getMembers';
-import { getMethods } from './public/getMethods';
 import { generateConfig } from '@/utils/generateConfigHelper';
+
+import { fetchAndSetAccessTokenInDatabase } from './protected';
+import { getMembers, getMethods } from './public';
 
 class Twitch {
   protected readonly _protected_clientId: string;
@@ -33,7 +34,9 @@ class Twitch {
     return fn.apply(this, args) as Promise<Awaited<ReturnType<T>>>;
   }
 
-  // protected _protected_setAccessToken
+  protected async _protected_fetchAndSetAccessTokenInDatabase() {
+    return this._private_callBoundAsync(fetchAndSetAccessTokenInDatabase);
+  }
 }
 
 /*

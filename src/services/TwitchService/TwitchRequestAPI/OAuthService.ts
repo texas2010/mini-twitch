@@ -13,6 +13,8 @@ interface AccessTokenRequest {
   grant_type: 'client_credentials';
 }
 
+type AppAccessToken = string;
+
 const TwitchOAuth = axios.create({
   baseURL: 'https://id.twitch.tv/oauth2/',
 });
@@ -23,7 +25,7 @@ TwitchOAuth.interceptors.request.use((config) => {
 });
 
 export const OAuthService = {
-  getAccessToken: async () => {
+  getAccessToken: async (): Promise<AppAccessToken> => {
     const { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } = generateConfig();
 
     try {
