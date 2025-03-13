@@ -13,7 +13,7 @@
     "dev_comment": "do not remove node env in dev",
     "dev": "NODE_ENV=development node ./bin/www"
   },
-  "author": "Lance/texas2010",
+  "author": "texas2010",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.6.0",
